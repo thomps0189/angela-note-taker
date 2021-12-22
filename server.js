@@ -11,7 +11,27 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.get("/api/notes", (req,res) => {
-    res.json(notes);
+    fs.readFile("./db/db.json", "utf-8", (err, data) => {
+        const notesList = JSON.parse(data)
+        res.json({notesList})
+    })
+})
+
+app.post("/api/notes", (req, res) => {
+    const newNote = req.body;
+
+    fs.readFile("./db/db.json", "utf-8", (err, data) => {
+        const notesListArray = JSON.parse(data)
+        const newId = uuidv4()
+        newNote.id = newId
+        notesListArray.push(newNote)
+        fs.writeFile("./db/db.json", JSON.stringify(notesListArray), (err) => {
+            if (err) {
+                console.log(err)
+            }
+            res.json({ success: true, newNote})
+        })
+    })
 })
 
 app.listen(3001, () => {
