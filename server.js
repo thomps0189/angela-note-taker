@@ -34,6 +34,10 @@ app.post("/api/notes", (req, res) => {
     })
 })
 
+app.get("/notes", function (req, res) {
+    res.sendFile(path.join(__dirname, "/public/notes.html"))
+});
+
 app.listen(3001, () => {
     console.log(`API server now on port 3001!`);
 });
