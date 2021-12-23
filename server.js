@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const {v4: uuidv4} = require("uuid");
 const path = require("path");
 const fs = require('fs');
-const { notes } = require("./db/db.json");
+// const { notes } = require("./db/db.json");
 
 app.use(morgan("tiny"));
 
@@ -25,8 +25,6 @@ app.post("/api/notes", (req, res) => {
     newNote.id = uuidv4();
     fs.readFile("./db/db.json", "utf-8", (err, data) => {
         const notesListArray = JSON.parse(data)
-        // const newId = myuuid();
-        // newNote.id = newId
         notesListArray.push(newNote)
         fs.writeFile("./db/db.json", JSON.stringify(notesListArray), (err) => {
             if (err) {
